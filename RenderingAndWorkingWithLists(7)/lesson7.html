@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="UTF-8">
+	<title>Document></title>
+
+	<style>
+	.completed {
+		color: #00AA00;
+	}
+	</style>
+
+</head>
+<body>
+
+	<div id="app">
+		<ul>
+			<!-- the class completed, is applied if task.completed is true -->
+			<li :class="{ 'completed': task.completed }" 
+				v-for="task in tasks"
+				@click="toggleCompletedFor(task)"
+			> 
+				{{ task.body }}
+			</li>
+		</ul>
+	</div>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
+
+<script src="main.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue implementation</title>
+
+<!-- Step 1: Load the Embed API library. -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
+
+
+<script>
+( function (w, d, s, g, js, js) {
+  g = w.gapi || ( w.gapi = {} );
+  g.analytics = { 
+    q: [],
+    ready : function (f) {
+        this.q.push(f);
+    }
+  };
+  js = d.createElement(s);
+  fs = d.getElementsByTagName(s)[0];
+  js.src = 'https://apis.google.com/js/platform.js';
+  fs.parentNode.insertBefore(js, fs);
+  js.onload = function() {
+    g.load('analytics');
+  };
+}
+(window, document, 'script'));
+</script>
+
+
+
+<!-- style for displaying graph data as loaded -->
+<style>
+  .completed {
+    color: #ff6600;
+  }
+</style>
+
+</head>
+<body>
+
+<!-- Step 2: Create the containing elements. -->
+
+<div id="embed-api-auth-container"></div>
+<div id="chart-container"></div>
+<div id="view-selector-container"></div>
+
+
+<!-- Vue.js implementation - HTML   -->
+
+<div id="app">
+    <tasks :list="tasks"></tasks>
+    <test></test> 
+  </div>
+
+<template id="tasks-template">
+  <ul>
+    <li id="listInput" 
+      :class="{ 'completed': graph.completed }" 
+      v-for="graph in list"
+      @click="graph.completed = !graph.completed"
+    > 
+      {{ graph.body }}
+    </li>
+  </ul>
+  <ul>
+    <li :class="{ 'completed': test.completed }"
+        v-for=""
+    >
+    </li>
+  </ul>
+</template>
+
+<!-- Step 3: Write the dashboard code -->
+
+<script>
+var elements = document.getElementById("listInput");
+gapi.analytics.ready(function() {
+
+   /**
+   * Authorize the user immediately if the user has already granted access.
+   * If no access has been created, render an authorize button inside the
+   * element with the ID "embed-api-auth-container".
+   */
+  // var CLIENT_ID = '71356795169-e8eqi1uac3kgr85jf9p92mccc72j09q1.apps.googleusercontent.com';
+  gapi.analytics.auth.authorize({
+    container: 'embed-api-auth-container',
+    clientid: '71356795169-e8eqi1uac3kgr85jf9p92mccc72j09q1.apps.googleusercontent.com'
+  });
+
+
+  /**
+   * Create a new ViewSelector instance to be rendered inside of an
+   * element with the id "view-selector-container".
+   */
+  var viewSelector = new gapi.analytics.ViewSelector({
+    container: 'view-selector-container'
+  });
+  
+  // Render the view selector to the page
+  viewSelector.execute();
+
+  /**
+   * Create a new DataChart instance with the given query parameters
+   * and Google chart options. It will be rendered inside an element
+   * with the id "chart-container".
+   */
+   var dimensionsInput = 'ga:date';
+   var dataChart = new gapi.analytics.googleCharts.DataChart({
+    
+    query: {
+      metrics: 'ga:sessions',
+      dimensions: dimensionsInput,
+      'start-date': '30daysAgo',
+      'end-date': 'yesterday'
+    },
+
+    chart: {
+      container: 'chart-container',
+      type: 'LINE',
+      options: {
+        width: '100%'
+      }
+    }    
+   });
+
+   /**
+    * Render the dataChart on the page whenever a new view is selected
+    */
+
+    viewSelector.on('change', function(ids) {
+      dataChart.set({query: {ids: ids}}).execute();
+    });
+  });
+
+  elements.value = "Completed";
+</script>
+<script src="vuemain.js"></script>
+
+</body>
+</html>

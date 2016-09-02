@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="UTF-8">
+	<title>Document></title>
+	<style>
+	.error {
+		color: #FF0000;
+	}
+	</style>
+
+</head>
+<body>
+
+	<div id="app">		
+		<button type="submit" @click="updateCounter"> 
+			Increment Counter: {{ counter }}
+		</button>		
+				<button type="submit" @click="secondCounter++"> 
+			Increment Counter: {{ secondCounter }}
+		</button>
+	</div>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
+
+<script>
+	new Vue({
+		el: '#app',
+		data: {
+			counter: 0,
+			secondCounter: 0,
+		},
+		methods: {
+			updateCounter: function () {
+				this.counter++;	
+			}			
+		}
+	});
+
+</script>
+
+
+</body>
+</html>

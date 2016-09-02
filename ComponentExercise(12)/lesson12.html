@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="UTF-8">
+	<title>Lesson 12</title>
+	<style>
+	.Alert {
+		position: relative;
+		background: #bbb;
+		border: 1px solid #ddd;
+		padding: 1em;
+	}
+
+	.Alert__close {
+		position: absolute;
+		top: 1em;
+		right: 1em;
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+	.Alert--Success {
+		background: #009900;
+		border: 2px solid #44BB44;
+
+	}
+
+	.Alert--Error {
+		background: #990000;
+		border: 2px solid #BB4444;
+
+	}
+
+	.Alert--Info {
+		background: #4444BB;
+		border: 2px solid #6666CC;
+
+	}
+	</style>
+
+</head>
+<body>
+	<alert type="success">
+		<strong>Success!</strong> Account updated
+	</alert>
+
+	<alert type="error">
+		<strong>Error!</strong> Something went wrong
+	</alert>
+
+	<alert type="info">
+		<strong>Info!</strong> Valuable information
+	</alert>
+
+<template id="alert-template">
+	<div :class="alertClasses" v-show="show">
+	<slot></slot>
+		<span class="Alert__close" @click="show = false">x</span>
+	</div>
+</template>
+
+
+
+
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
+
+<script>
+	Vue.component('alert', {
+
+		template: '#alert-template',
+
+		props: ['type'],
+
+		data: function() {
+			return {
+				show: true
+			};
+		},
+
+		computed: {
+			alertClasses: function() {
+				var type = this.type;
+
+				return {
+					'Alert': true,
+					'Alert--Success': type == 'success',
+					'Alert--Error': type == 'error',
+					'Alert--Info': type == 'info',
+				}
+			}
+		}
+	});
+
+	new Vue({
+		el: 'body'
+	});
+
+</script>
+
+
+</body>
+</html>

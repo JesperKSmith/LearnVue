@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lesson 19</title>
+</head>		
+
+<body>
+<component :is="currentView"></component>
+	<a href="#" @click="currentView = 'home-page'">Home</a> |
+	<a href="#" @click="currentView = 'about-page'">About</a>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.17/vue.js"></script>
+	<script src="app.js"></script>
+</body>
+</html>
